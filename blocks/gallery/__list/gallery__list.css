@@ -1,0 +1,9 @@
+.gallery_list {
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid: 361px / repeat(auto-fill, 282px);
+  justify-content: center;
+  gap: 20px 17px;
+  list-style: none;
+}
