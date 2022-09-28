@@ -2,81 +2,68 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="./vendor/normalize.css">
   <link rel="stylesheet" href="./pages/index.css">
   <title>Mesto Russia</title>
 </head>
 <body class="root">
 <header class="header">
-  <img src="./images/mesto-white.svg" alt="Лого страницы." class="header__logo">
+  <img src="./images/mesto-white.svg" alt="Лого страницы" class="header__logo">
 </header>
 <main>
   <section class="profile">
-    <img src="./images/jacques.jpg" alt="Фотография Жак-Ив Кусто." class="profile__image">
+    <img src="./images/jacques.jpg" alt="Фото пользователя" class="profile__image">
     <div class="profile__info">
       <h1 class="profile__name">Жак-Ив Кусто</h1>
-      <button class="profile__edit-btn">
-        <img src="images/edit-icon.svg" alt="Иконка _редактировать_" class="profile__edit-icon">
-      </button>
+      <button class="profile__btn profile__btn_action_edit"></button>
       <p class="profile__description">Исследователь океана</p>
     </div>
-    <button class="profile__add-btn">
-      <img src="images/add-icon.svg" alt="Иконка _добавить_" class="profile__add-icon">
-    </button>
+    <button class="profile__btn profile__btn_action_add"></button>
   </section>
-  <section class="gallery" aria-label="Фото-галерея.">
-    <ul class="gallery_list">
+  <section class="gallery" aria-label="Фото-галерея">
+    <ul class="gallery__list">
       <li class="gallery__item card">
-        <img src="./images/mountains.jpg" alt="Картинка в карточке." class="card__image">
+        <img src="./images/bicycle.jpg" alt="Велосипед" class="card__image">
         <div class="card__info">
-          <h2 class="card__title">Карачаевск</h2>
-          <button class="card__btn">
-            <img src="./images/fav-icon.svg" alt="Иконка _нравится_" class="card__icon">
-          </button>
+          <h2 class="card__title">Велосипед</h2>
+          <button class="card__btn"></button>
         </div>
       </li>
       <li class="gallery__item card">
-        <img src="./images/hills.jpg" alt="Картинка в карточке." class="card__image">
+        <img src="./images/car.jpg" alt="Автомобиль" class="card__image">
         <div class="card__info">
-          <h2 class="card__title">Эльбрус</h2>
-          <button class="card__btn">
-            <img src="./images/fav-icon.svg" alt="Иконка _нравится_" class="card__icon">
-          </button>
+          <h2 class="card__title">Автомобиль</h2>
+          <button class="card__btn"></button>
         </div>
       </li>
       <li class="gallery__item card">
-        <img src="./images/temple.jpg" alt="Картинка в карточке." class="card__image">
+        <img src="./images/airplane.jpg" alt="Самолёт" class="card__image">
         <div class="card__info">
-          <h2 class="card__title">Домбай</h2>
-          <button class="card__btn">
-            <img src="./images/fav-icon.svg" alt="Иконка _нравится_" class="card__icon">
-          </button>
+          <h2 class="card__title">Самолёт</h2>
+          <button class="card__btn"></button>
         </div>
       </li>
       <li class="gallery__item card">
-        <img src="./images/hills.jpg" alt="Картинка в карточке." class="card__image">
+        <img src="./images/cruise-ship.jpg" alt="Круизный лайнер" class="card__image">
         <div class="card__info">
-          <h2 class="card__title">Горы Эльбрус</h2>
-          <button class="card__btn">
-            <img src="./images/fav-icon.svg" alt="Иконка _нравится_" class="card__icon">
-          </button>
+          <h2 class="card__title">Круизный лайнер</h2>
+          <button class="card__btn"></button>
         </div>
       </li>
       <li class="gallery__item card">
-        <img src="./images/temple.jpg" alt="Картинка в карточке." class="card__image">
+        <img src="./images/kick-scooter.jpg" alt="Самокат" class="card__image">
         <div class="card__info">
-          <h2 class="card__title">Карачаево-Черкессия</h2>
-          <button class="card__btn">
-            <img src="./images/fav-icon.svg" alt="Иконка _нравится_" class="card__icon">
-          </button>
+          <h2 class="card__title">Самокат</h2>
+          <button class="card__btn"></button>
         </div>
       </li>
       <li class="gallery__item card">
-        <img src="./images/mountains.jpg" alt="Картинка в карточке." class="card__image">
+        <img src="./images/train.jpg" alt="Поезд" class="card__image">
         <div class="card__info">
-          <h2 class="card__title">Домбай</h2>
-          <button class="card__btn">
-            <img src="./images/fav-icon.svg" alt="Иконка _нравится_" class="card__icon">
-          </button>
+          <h2 class="card__title">Поезд</h2>
+          <button class="card__btn"></button>
         </div>
       </li>
     </ul>
@@ -85,5 +72,6 @@
 <footer class="footer">
   <p class="footer__label">©&nbsp;2020&nbsp;Mesto&nbsp;Russia</p>
 </footer>
+<script src="./vendor/index.js"></script>
 </body>
 </html>
