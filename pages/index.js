@@ -3,10 +3,10 @@ function setState(item) {
   let isActive = false;
   return function () {
     if (!isActive){
-      item.style.backgroundImage = `url('../../../images/fav-icon-black.svg')`;
+      item.style.backgroundImage = `url('./../../../images/fav-icon-black.svg')`;
     }
     else {
-      item.style.backgroundImage = `url('../../../images/fav-icon.svg')`;
+      item.style.backgroundImage = `url('./../../../images/fav-icon.svg')`;
     }
     isActive = !isActive;
   }
