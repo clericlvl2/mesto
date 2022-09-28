@@ -1,7 +1,15 @@
 .card__btn {
-  width: fit-content;
+  width: 22px;
+  height: 19px;
   margin: 0;
   padding: 0;
-  background: none;
   border: none;
+  background: url('../../../images/fav-icon.svg') center no-repeat;
+  background-size: 22px 19px;
+  cursor: pointer;
+  transition: opacity .24s;
+}
+
+.card__btn:hover {
+  opacity: 0.5;
 }
