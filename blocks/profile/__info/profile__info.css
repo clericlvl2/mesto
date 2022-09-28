@@ -5,16 +5,16 @@
       'name btn'
       'desc desc';
   align-items: end;
-  grid-gap: 16px 18px;
+  grid-gap: 8px 24px;
 }
 
 @media screen and (max-width: 540px) {
   .profile__info {
-    margin: 0 0 36px 0;
+    margin: 0 0 33px 0;
     grid-template-columns: 18px auto 18px;
     grid-template-areas:
       'empty name btn'
       'desc desc desc';
-    gap: 14px 10px;
+    gap: 6px 12px;
   }
 }

@@ -1,20 +1,19 @@
-.profile__edit-btn {
+.profile__btn_action_edit {
   width: 24px;
   height: 24px;
   margin: 0 0 8px 0;
   padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   grid-area: btn;
-  background: none;
+  background: url('../../../../images/edit-icon.svg') center no-repeat;
+  background-size: 10px 10px;
   border: 1px solid #fff;
 }
 
 @media screen and (max-width: 540px) {
-  .profile__edit-btn {
+  .profile__btn_action_edit {
     width: 18px;
     height: 18px;
     margin-bottom: 6px;
+    background-size: 7.5px 7.5px;
   }
 }

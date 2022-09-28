@@ -1,0 +1,8 @@
+.profile__btn {
+  transition: opacity .24s;
+  cursor: pointer;
+}
+
+.profile__btn:hover {
+  opacity: .6;
+}
