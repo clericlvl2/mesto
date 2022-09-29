@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="./vendor/normalize.css">
   <link rel="stylesheet" href="./pages/index.css">
   <title>Mesto Russia</title>
 </head>
@@ -17,10 +16,21 @@
     <img src="./images/jacques.jpg" alt="Фото пользователя" class="profile__image">
     <div class="profile__info">
       <h1 class="profile__name">Жак-Ив Кусто</h1>
-      <button class="profile__btn profile__btn_action_edit"></button>
+      <button type="button" class="profile__btn-edit"></button>
       <p class="profile__description">Исследователь океана</p>
     </div>
-    <button class="profile__btn profile__btn_action_add"></button>
+    <button type="button" class="profile__btn-add"></button>
+  </section>
+  <section class="popup">
+    <div class="popup__container">
+      <h3 class="popup__title">Редактировать профиль</h3>
+      <form class="popup__form">
+        <input type="text" class="popup__form-text popup__form-text_type_name">
+        <input type="text" class="popup__form-text popup__form-text_type_desc">
+        <button type="submit" class="popup__btn-save">Сохранить</button>
+      </form>
+      <button type="button" class="popup__btn-exit"></button>
+    </div>
   </section>
   <section class="gallery" aria-label="Фото-галерея">
     <ul class="gallery__list">
@@ -28,42 +38,42 @@
         <img src="./images/bicycle.jpg" alt="Велосипед" class="card__image">
         <div class="card__info">
           <h2 class="card__title">Велосипед</h2>
-          <button class="card__btn"></button>
+          <button type="button" class="card__btn"></button>
         </div>
       </li>
       <li class="gallery__item card">
         <img src="./images/car.jpg" alt="Автомобиль" class="card__image">
         <div class="card__info">
           <h2 class="card__title">Автомобиль</h2>
-          <button class="card__btn"></button>
+          <button type="button" class="card__btn"></button>
         </div>
       </li>
       <li class="gallery__item card">
         <img src="./images/airplane.jpg" alt="Самолёт" class="card__image">
         <div class="card__info">
           <h2 class="card__title">Самолёт</h2>
-          <button class="card__btn"></button>
+          <button type="button" class="card__btn"></button>
         </div>
       </li>
       <li class="gallery__item card">
         <img src="./images/cruise-ship.jpg" alt="Круизный лайнер" class="card__image">
         <div class="card__info">
           <h2 class="card__title">Круизный лайнер</h2>
-          <button class="card__btn"></button>
+          <button type="button" class="card__btn"></button>
         </div>
       </li>
       <li class="gallery__item card">
         <img src="./images/kick-scooter.jpg" alt="Самокат" class="card__image">
         <div class="card__info">
           <h2 class="card__title">Самокат</h2>
-          <button class="card__btn"></button>
+          <button type="button" class="card__btn"></button>
         </div>
       </li>
       <li class="gallery__item card">
         <img src="./images/train.jpg" alt="Поезд" class="card__image">
         <div class="card__info">
           <h2 class="card__title">Поезд</h2>
-          <button class="card__btn"></button>
+          <button type="button" class="card__btn"></button>
         </div>
       </li>
     </ul>
@@ -72,6 +82,6 @@
 <footer class="footer">
   <p class="footer__label">©&nbsp;2020&nbsp;Mesto&nbsp;Russia</p>
 </footer>
-<script src="pages/index.js"></script>
+<script src="scripts/index.js"></script>
 </body>
 </html>
