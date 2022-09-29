@@ -21,17 +21,6 @@
     </div>
     <button type="button" class="profile__btn-add"></button>
   </section>
-  <section class="popup">
-    <div class="popup__container">
-      <h3 class="popup__title">Редактировать профиль</h3>
-      <form class="popup__form">
-        <input type="text" class="popup__form-text popup__form-text_type_name">
-        <input type="text" class="popup__form-text popup__form-text_type_desc">
-        <button type="submit" class="popup__btn-save">Сохранить</button>
-      </form>
-      <button type="button" class="popup__btn-exit"></button>
-    </div>
-  </section>
   <section class="gallery" aria-label="Фото-галерея">
     <ul class="gallery__list">
       <li class="gallery__item card">
@@ -79,6 +68,17 @@
     </ul>
   </section>
 </main>
+<section class="popup">
+  <div class="popup__container">
+    <h3 class="popup__title">Редактировать профиль</h3>
+    <form name="profile-data-form" class="popup__form">
+      <input type="text" name="profile-name" class="popup__form-text popup__form-text_type_name">
+      <input type="text" name="profile-desc" class="popup__form-text popup__form-text_type_desc">
+      <button type="submit" class="popup__btn-save">Сохранить</button>
+    </form>
+    <button type="button" class="popup__btn-exit"></button>
+  </div>
+</section>
 <footer class="footer">
   <p class="footer__label">©&nbsp;2020&nbsp;Mesto&nbsp;Russia</p>
 </footer>
