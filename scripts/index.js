@@ -5,7 +5,7 @@ let popupWindow = document.querySelector('.popup');
 let popupInputName =  document.querySelector('.popup__form-text_type_name');
 let popupInputDesc = document.querySelector('.popup__form-text_type_desc');
 let popupExitBtn = document.querySelector('.popup__btn-exit');
-let popupSaveBtn = document.querySelector('.popup__btn-save');
+let popupForm = document.querySelector('.popup__form');
 let likeButtons = document.querySelectorAll('.card__btn');
 let likeButtonsArray = Array.from(likeButtons);
 function openPopup() {
@@ -24,20 +24,20 @@ function submitData(event) {
 }
 profileEditBtn.addEventListener('click', openPopup);
 popupExitBtn.addEventListener('click', closePopup);
-popupSaveBtn.addEventListener('click', submitData)
+popupForm.addEventListener('submit', submitData)
 function setState(item) {
   let isActive = false;
-  return function () {
-    if (!isActive){
-      item.style.backgroundImage = `url('./images/fav-icon-black.svg')`;
+  return function() {
+    if (!isActive) {
+      item.classList.add('card__btn_liked');
     }
     else {
-      item.style.backgroundImage = `url('./images/fav-icon.svg')`;
+      item.classList.remove('card__btn_liked');
     }
     isActive = !isActive;
   }
 }
 for (let item of likeButtonsArray) {
   let changeBack = setState(item);
-  item.addEventListener('click', changeBack)
+  item.addEventListener('click', changeBack);
 }
