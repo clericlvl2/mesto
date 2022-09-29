@@ -2,9 +2,9 @@
   width: 120px;
   height: 120px;
   margin: 0 30px 0 0;
+  object-fit: cover;
   object-position: center;
-  object-fit: fill;
-  border-radius: 100%;
+  border-radius: 50%;
 }
 
 @media screen and (max-width: 540px) {
