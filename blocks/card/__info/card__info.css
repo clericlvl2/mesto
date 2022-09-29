@@ -1,5 +1,5 @@
 .card__info {
-  width: calc(100% - 20px*2);
+  width: 242px;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
