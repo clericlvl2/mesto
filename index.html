@@ -23,59 +23,45 @@
   </section>
   <section class="gallery" aria-label="Фото-галерея">
     <ul class="gallery__list">
-      <li class="gallery__item card">
-        <img src="./images/bicycle.jpg" alt="Велосипед" class="card__image">
-        <div class="card__info">
-          <h2 class="card__title">Велосипед</h2>
-          <button type="button" class="card__btn"></button>
-        </div>
-      </li>
-      <li class="gallery__item card">
-        <img src="./images/car.jpg" alt="Автомобиль" class="card__image">
-        <div class="card__info">
-          <h2 class="card__title">Автомобиль</h2>
-          <button type="button" class="card__btn"></button>
-        </div>
-      </li>
-      <li class="gallery__item card">
-        <img src="./images/airplane.jpg" alt="Самолёт" class="card__image">
-        <div class="card__info">
-          <h2 class="card__title">Самолёт</h2>
-          <button type="button" class="card__btn"></button>
-        </div>
-      </li>
-      <li class="gallery__item card">
-        <img src="./images/cruise-ship.jpg" alt="Круизный лайнер" class="card__image">
-        <div class="card__info">
-          <h2 class="card__title">Круизный лайнер</h2>
-          <button type="button" class="card__btn"></button>
-        </div>
-      </li>
-      <li class="gallery__item card">
-        <img src="./images/kick-scooter.jpg" alt="Самокат" class="card__image">
-        <div class="card__info">
-          <h2 class="card__title">Самокат</h2>
-          <button type="button" class="card__btn"></button>
-        </div>
-      </li>
-      <li class="gallery__item card">
-        <img src="./images/train.jpg" alt="Поезд" class="card__image">
-        <div class="card__info">
-          <h2 class="card__title">Поезд</h2>
-          <button type="button" class="card__btn"></button>
-        </div>
-      </li>
+      <template id="js-card-template">
+        <li class="gallery__item card">
+          <img src="" alt="Фото" class="card__image">
+          <div class="card__info">
+            <h2 class="card__title"></h2>
+            <button type="button" class="card__btn-like"></button>
+          </div>
+          <button type="button" class="card__btn-delete"></button>
+        </li>
+      </template>
     </ul>
   </section>
 </main>
-<section class="popup">
+<section class="popup popup_action_edit">
   <div class="popup__container">
     <h3 class="popup__title">Редактировать профиль</h3>
-    <form name="profile-data-form" class="popup__form">
+    <form name="profile-data-form" class="popup__form popup__form_data_profile">
       <input type="text" name="profile-name" class="popup__form-text popup__form-text_type_name">
       <input type="text" name="profile-desc" class="popup__form-text popup__form-text_type_desc">
-      <button type="submit" class="popup__btn-save">Сохранить</button>
+      <button type="submit" class="popup__btn-submit popup__btn-submit_data_profile">Сохранить</button>
     </form>
+    <button type="button" class="popup__btn-exit"></button>
+  </div>
+</section>
+<section class="popup popup_action_add">
+  <div class="popup__container">
+    <h3 class="popup__title">Новое место</h3>
+    <form name="card-data-form" class="popup__form popup__form_data_card">
+      <input type="text" name="card-title" placeholder="Название" class="popup__form-text popup__form-text_type_card-title">
+      <input type="text" name="card-image" placeholder="Ссылка на картинку" class="popup__form-text popup__form-text_type_card-image">
+      <button type="submit" class="popup__btn-submit popup__btn-submit_data_card">Создать</button>
+    </form>
+    <button type="button" class="popup__btn-exit"></button>
+  </div>
+</section>
+<section class="popup popup_action_zoom">
+  <div class="popup__image-container">
+    <img src="" alt="Фото" class="popup__image">
+    <p class="popup__image-subtitle"></p>
     <button type="button" class="popup__btn-exit"></button>
   </div>
 </section>
