@@ -1,9 +1,14 @@
 .popup__form-text {
   width: 100%;
+  margin: 0 0 19px 0;
   padding: 10px 0;
   border: none;
   border-bottom: 1px solid rgba(0,0,0,.2);
   font-size: 14px;
   line-height: 17px;
   color: #000000;
+}
+
+.popup__form-text:last-of-type {
+  margin: 0;
 }
