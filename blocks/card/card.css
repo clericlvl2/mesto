@@ -1,5 +1,9 @@
 .card {
+  position: relative;
   width: 100%;
+  display: flex;
+  justify-content: start;
+  flex-flow: column;
   overflow: hidden;
   border-radius: 10px;
   background: #fff;
