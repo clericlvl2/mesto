@@ -7,4 +7,9 @@
   object-position: center;
   color: black;
   cursor: pointer;
+  transition: filter .24s;
+}
+
+.card__image:hover {
+  filter: brightness(80%);
 }

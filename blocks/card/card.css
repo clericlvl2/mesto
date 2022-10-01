@@ -7,9 +7,4 @@
   overflow: hidden;
   border-radius: 10px;
   background: #fff;
-  transition: transform .24s;
-}
-
-.card:hover {
-  transform: scale(1.02);
 }
