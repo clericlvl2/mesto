@@ -28,10 +28,12 @@ const popupArray = [popupEditProfile, popupAddCard, popupZoomImage];
 
 // app logic functions
 function openPopup(popupElement) {
+  document.addEventListener('keydown', exitPopupKeyHandler);
   popupElement.classList.add('popup_opened');
 }
 
 function closePopup(popupElement) {
+  document.removeEventListener('keydown', exitPopupKeyHandler);
   popupElement.classList.remove('popup_opened');
 }
 
@@ -97,13 +99,11 @@ function exitPopupClickHandler(evt) {
 }
 
 function exitPopupKeyHandler(evt) {
-  const activePopup = document.querySelector('.popup_opened');
-  if (evt.key === 'Escape' && activePopup) {
-    closePopup(activePopup);
+  if (evt.key === 'Escape' && document.querySelector('.popup_opened')) {
+    closePopup(document.querySelector('.popup_opened'));
   }
 }
 
-document.addEventListener('keydown', exitPopupKeyHandler);
 popupArray.forEach(popup => {
   popup.addEventListener('click', exitPopupClickHandler);
 })
