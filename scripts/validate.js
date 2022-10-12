@@ -1,15 +1,25 @@
+const validationConfig = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__form-input',
+  errorSelector: '.popup__form-error',
+  submitButtonSelector: '.popup__btn-submit',
+  inactiveButtonClass: 'popup__btn-submit_disabled',
+  inputErrorClass: 'popup__form-input_type_error',
+  errorClass: 'popup__form-error_active',
+}
+
 function areInputsValid(inputList) {
   return inputList.every(inputElement => inputElement.validity.valid);
 }
 
-function clearFormErrors(formElement) {
-  const inputArray = Array.from(formElement.querySelectorAll('.popup__form-input'));
-  const errorArray = Array.from(formElement.querySelectorAll('.popup__form-error'));
+function clearFormErrors(formElement, props) {
+  const inputArray = Array.from(formElement.querySelectorAll(props.inputSelector));
+  const errorArray = Array.from(formElement.querySelectorAll(props.errorSelector));
   inputArray.forEach(input => {
-    input.classList.remove('popup__form-input_type_error');
+    input.classList.remove(props.inputErrorClass);
   })
   errorArray.forEach(error => {
-    error.classList.remove('popup__form-error_active');
+    error.classList.remove(props.errorClass);
     error.textContent = '';
   })
 }
@@ -73,11 +83,4 @@ function enableValidation(props) {
   });
 }
 
-enableValidation({
-  formSelector: '.popup__form',
-  inputSelector: '.popup__form-input',
-  submitButtonSelector: '.popup__btn-submit',
-  inactiveButtonClass: 'popup__btn-submit_disabled',
-  inputErrorClass: 'popup__form-input_type_error',
-  errorClass: 'popup__form-error_active'
-});
+enableValidation(validationConfig);
