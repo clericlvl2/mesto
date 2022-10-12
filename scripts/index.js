@@ -42,13 +42,31 @@ function submitUserData(event) {
   closePopup(popupEditProfile);
 }
 
+function setCardListeners(image, title, likeBtn, deleteBtn) {
+  likeBtn.addEventListener('click', evt => {
+    evt.target.classList.toggle('card__btn-like_active');
+  });
+  deleteBtn.addEventListener('click', evt => {
+    evt.target.closest('.card').remove();
+  });
+  image.addEventListener('click', () => {
+    zoomedImage.src = image.src;
+    zoomedImage.alt = image.alt;
+    zoomedText.textContent = title.textContent;
+    openPopup(popupZoomImage);
+  });
+}
+
 function createCard(data) {
   const card = cardTemplate.querySelector('.card').cloneNode(true);
   const cardTitle = card.querySelector('.card__title');
   const cardImage = card.querySelector('.card__image');
+  const cardLikeBtn = card.querySelector('.card__btn-like');
+  const cardDeleteBtn = card.querySelector('.card__btn-delete');
   cardTitle.textContent = data.name;
   cardImage.src = data.link;
   cardImage.alt = 'Фото. ' + data.name;
+  setCardListeners(cardImage, cardTitle, cardLikeBtn, cardDeleteBtn);
   return card;
 }
 
@@ -90,35 +108,15 @@ popupArray.forEach(popup => {
   popup.addEventListener('click', exitPopupClickHandler);
 })
 
-gallery.addEventListener('click', evt => {
-  const isLikeBtn = evt.target.classList.contains('card__btn-like');
-  const isDeleteBtn = evt.target.classList.contains('card__btn-delete');
-  const isImage = evt.target.classList.contains('card__image');
-  if (isLikeBtn) {
-    evt.target.classList.toggle('card__btn-like_active');
-  }
-  if (isDeleteBtn) {
-    evt.target.closest('.card').remove();
-  }
-  if (isImage) {
-    const cardImage = evt.target;
-    const cardTitle = evt.target.closest('.card').querySelector('.card__title');
-    zoomedImage.src = cardImage.src;
-    zoomedImage.alt = cardImage.alt;
-    zoomedText.textContent = cardTitle.textContent;
-    openPopup(popupZoomImage);
-  }
-})
-
 userEditBtn.addEventListener('click', () => {
-  clearFormErrors(formEditProfile);
+  clearFormErrors(formEditProfile, validationConfig);
   userNameInput.value = userName.textContent;
   userProfessionInput.value = userDesc.textContent;
   openPopup(popupEditProfile);
 });
 userAddBtn.addEventListener('click', () => {
   formAddCard.reset();
-  clearFormErrors(formAddCard);
+  clearFormErrors(formAddCard, validationConfig);
   openPopup(popupAddCard);
 });
 formEditProfile.addEventListener('submit', submitUserData);
