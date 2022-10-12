@@ -9,14 +9,15 @@ const cardTemplate = document.querySelector('#js-card-template').content;
 // popup edit profile
 const popupEditProfile = document.querySelector('.popup_action_edit');
 const formEditProfile = document.querySelector('.popup__form_data_profile');
-const userNameInput = document.querySelector('.popup__form-text_type_name');
-const userProfessionInput = document.querySelector('.popup__form-text_type_desc');
+const userNameInput = document.querySelector('.popup__form-input_data_name');
+const userProfessionInput = document.querySelector('.popup__form-input_data_desc');
+const submitProfileDataBtn = document.querySelector('.popup__btn-submit_data_profile');
 
 // popup add card
 const popupAddCard = document.querySelector('.popup_action_add');
 const formAddCard = document.querySelector('.popup__form_data_card');
-const cardTitleInput = document.querySelector('.popup__form-text_type_card-title');
-const cardImageInput = document.querySelector('.popup__form-text_type_card-image');
+const cardTitleInput = document.querySelector('.popup__form-input_data_card-title');
+const cardImageInput = document.querySelector('.popup__form-input_data_card-image');
 
 // popup zoom image
 const popupZoomImage = document.querySelector('.popup_action_zoom');
@@ -26,12 +27,12 @@ const zoomedText = document.querySelector('.popup__image-subtitle');
 const popupArray = [popupEditProfile, popupAddCard, popupZoomImage];
 
 // app logic functions
-function openPopup(element) {
-  element.classList.add('popup_opened');
+function openPopup(popupElement) {
+  popupElement.classList.add('popup_opened');
 }
 
-function closePopup(element) {
-  element.classList.remove('popup_opened');
+function closePopup(popupElement) {
+  popupElement.classList.remove('popup_opened');
 }
 
 function submitUserData(event) {
@@ -64,7 +65,6 @@ function submitCardData(evt) {
   };
   addCard(data);
   closePopup(popupAddCard);
-  formAddCard.reset();
 }
 
 function exitPopupClickHandler(evt) {
@@ -111,10 +111,15 @@ gallery.addEventListener('click', evt => {
 })
 
 userEditBtn.addEventListener('click', () => {
+  clearFormErrors(formEditProfile);
   userNameInput.value = userName.textContent;
   userProfessionInput.value = userDesc.textContent;
   openPopup(popupEditProfile);
 });
-userAddBtn.addEventListener('click', () => openPopup(popupAddCard));
+userAddBtn.addEventListener('click', () => {
+  formAddCard.reset();
+  clearFormErrors(formAddCard);
+  openPopup(popupAddCard);
+});
 formEditProfile.addEventListener('submit', submitUserData);
 formAddCard.addEventListener('submit', submitCardData);
