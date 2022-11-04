@@ -1,9 +1,10 @@
-class Card {
-  constructor(data, templateSelector) {
+export default class Card {
+  constructor(data, templateSelector, openImagePreview) {
     this._image = data.link;
     this._title = data.name;
     this._templateSelector = templateSelector;
     this._element = null;
+    this._openImagePreview = openImagePreview;
   }
 
   _getCardTemplate() {
@@ -23,16 +24,21 @@ class Card {
   }
 
   _handleImageClick() {
+    const imageZoomPopup = document.querySelector('.popup_action_zoom');
+    const zoomedImage = imageZoomPopup.querySelector('.popup__image');
+    const zoomedText = imageZoomPopup.querySelector('.popup__image-subtitle');
+
     zoomedImage.src = this._image;
     zoomedImage.alt = `Фото. ${this._title}`;
     zoomedText.textContent = this._title;
-    openPopup(popupZoomImage);
+    this._openImagePreview(imageZoomPopup);
   }
 
   _setEventListeners() {
     const cardLikeBtn = this._element.querySelector('.card__btn-like');
     const cardDeleteBtn = this._element.querySelector('.card__btn-delete');
     const cardImage = this._element.querySelector('.card__image');
+
     cardLikeBtn.addEventListener('click', evt => {
       this._handleLikeBtn(evt);
     });
