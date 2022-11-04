@@ -1,30 +1,36 @@
+import Card from './Card.js';
+import FormValidator from './FormValidator.js';
+import { validationConfig, galleryMockData } from './constants.js';
+
 // page
 const userName = document.querySelector('.profile__name');
-const userDesc = document.querySelector('.profile__description');
+const userDescription = document.querySelector('.profile__description');
 const userEditBtn = document.querySelector('.profile__btn-edit');
-const userAddBtn = document.querySelector('.profile__btn-add');
+const cardAddBtn = document.querySelector('.profile__btn-add');
 const gallery = document.querySelector('.gallery__list');
-const cardTemplate = document.querySelector('#js-card-template').content;
 
-// popup edit profile
-const popupEditProfile = document.querySelector('.popup_action_edit');
-const formEditProfile = document.querySelector('.popup__form_data_profile');
-const userNameInput = document.querySelector('.popup__form-input_data_name');
-const userProfessionInput = document.querySelector('.popup__form-input_data_desc');
-const submitProfileDataBtn = document.querySelector('.popup__btn-submit_data_profile');
+// popup user data
+const userDataPopup = document.querySelector('.popup_action_edit');
+const userDataForm = userDataPopup.querySelector('.popup__form_data_profile');
+const userNameInput = userDataPopup.querySelector('.popup__form-input_data_name');
+const userDescriptionInput = userDataPopup.querySelector('.popup__form-input_data_desc');
 
-// popup add card
-const popupAddCard = document.querySelector('.popup_action_add');
-const formAddCard = document.querySelector('.popup__form_data_card');
-const cardTitleInput = document.querySelector('.popup__form-input_data_card-title');
-const cardImageInput = document.querySelector('.popup__form-input_data_card-image');
+// popup card data
+const cardDataPopup = document.querySelector('.popup_action_add');
+const cardDataForm = cardDataPopup.querySelector('.popup__form_data_card');
+const cardTitleInput = cardDataPopup.querySelector('.popup__form-input_data_card-title');
+const cardImageInput = cardDataPopup.querySelector('.popup__form-input_data_card-image');
 
 // popup zoom image
-const popupZoomImage = document.querySelector('.popup_action_zoom');
-const zoomedImage = document.querySelector('.popup__image');
-const zoomedText = document.querySelector('.popup__image-subtitle');
+const imageZoomPopup = document.querySelector('.popup_action_zoom');
 
-const popupArray = [popupEditProfile, popupAddCard, popupZoomImage];
+const popupList = [userDataPopup, cardDataPopup, imageZoomPopup];
+
+// enable validation
+const userFormValidator = new FormValidator(validationConfig, userDataForm);
+const cardFormValidator = new FormValidator(validationConfig, cardDataForm);
+userFormValidator.enableValidation();
+cardFormValidator.enableValidation();
 
 // app logic functions
 function openPopup(popupElement) {
@@ -37,54 +43,10 @@ function closePopup(popupElement) {
   popupElement.classList.remove('popup_opened');
 }
 
-function submitUserData(event) {
-  event.preventDefault();
-  userName.textContent = userNameInput.value;
-  userDesc.textContent = userProfessionInput.value;
-  closePopup(popupEditProfile);
-}
-
-function setCardListeners(image, title, likeBtn, deleteBtn) {
-  likeBtn.addEventListener('click', evt => {
-    evt.target.classList.toggle('card__btn-like_active');
-  });
-  deleteBtn.addEventListener('click', evt => {
-    evt.target.closest('.card').remove();
-  });
-  image.addEventListener('click', () => {
-    zoomedImage.src = image.src;
-    zoomedImage.alt = image.alt;
-    zoomedText.textContent = title.textContent;
-    openPopup(popupZoomImage);
-  });
-}
-
-function createCard(data) {
-  const card = cardTemplate.querySelector('.card').cloneNode(true);
-  const cardTitle = card.querySelector('.card__title');
-  const cardImage = card.querySelector('.card__image');
-  const cardLikeBtn = card.querySelector('.card__btn-like');
-  const cardDeleteBtn = card.querySelector('.card__btn-delete');
-  cardTitle.textContent = data.name;
-  cardImage.src = data.link;
-  cardImage.alt = 'Фото. ' + data.name;
-  setCardListeners(cardImage, cardTitle, cardLikeBtn, cardDeleteBtn);
-  return card;
-}
-
-function addCard(data) {
-  const newCard = createCard(data);
-  gallery.prepend(newCard);
-}
-
-function submitCardData(evt) {
-  evt.preventDefault();
-  const data = {
-    name: cardTitleInput.value,
-    link: cardImageInput.value,
-  };
-  addCard(data);
-  closePopup(popupAddCard);
+function exitPopupKeyHandler(evt) {
+  if (evt.key === 'Escape' && document.querySelector('.popup_opened')) {
+    closePopup(document.querySelector('.popup_opened'));
+  }
 }
 
 function exitPopupClickHandler(evt) {
@@ -98,26 +60,44 @@ function exitPopupClickHandler(evt) {
   }
 }
 
-function exitPopupKeyHandler(evt) {
-  if (evt.key === 'Escape' && document.querySelector('.popup_opened')) {
-    closePopup(document.querySelector('.popup_opened'));
-  }
+function addCard(data) {
+  const newCard = new Card(data, 'js-card-template', openPopup).generateCard();
+  gallery.prepend(newCard);
 }
 
-popupArray.forEach(popup => {
-  popup.addEventListener('click', exitPopupClickHandler);
-})
+function submitCardData(evt) {
+  evt.preventDefault();
+  const data = {
+    name: cardTitleInput.value,
+    link: cardImageInput.value,
+  };
+  addCard(data);
+  closePopup(cardDataPopup);
+}
 
+function submitUserData(event) {
+  event.preventDefault();
+  userName.textContent = userNameInput.value;
+  userDescription.textContent = userDescriptionInput.value;
+  closePopup(userDataPopup);
+}
+
+// set popups, forms and buttons event listeners
+userDataForm.addEventListener('submit', submitUserData);
+cardDataForm.addEventListener('submit', submitCardData);
 userEditBtn.addEventListener('click', () => {
-  clearFormErrors(formEditProfile, validationConfig);
   userNameInput.value = userName.textContent;
-  userProfessionInput.value = userDesc.textContent;
-  openPopup(popupEditProfile);
+  userDescriptionInput.value = userDescription.textContent;
+  userFormValidator.clearFormStyles();
+  openPopup(userDataPopup);
 });
-userAddBtn.addEventListener('click', () => {
-  formAddCard.reset();
-  clearFormErrors(formAddCard, validationConfig);
-  openPopup(popupAddCard);
+cardAddBtn.addEventListener('click', () => {
+  cardDataForm.reset();
+  cardFormValidator.clearFormStyles();
+  openPopup(cardDataPopup);
 });
-formEditProfile.addEventListener('submit', submitUserData);
-formAddCard.addEventListener('submit', submitCardData);
+popupList.forEach(popupElement => {
+  popupElement.addEventListener('click', exitPopupClickHandler);
+});
+
+galleryMockData.forEach(item => addCard(item));
