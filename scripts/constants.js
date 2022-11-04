@@ -1,3 +1,12 @@
+const validationConfig = {
+  inputSelector: '.popup__form-input',
+  errorSelector: '.popup__form-error',
+  submitButtonSelector: '.popup__btn-submit',
+  inactiveButtonClass: 'popup__btn-submit_disabled',
+  inputErrorClass: 'popup__form-input_type_error',
+  activeErrorClass: 'popup__form-error_active',
+}
+
 const initialCards = [
   {
     name: 'Архыз',
@@ -24,4 +33,5 @@ const initialCards = [
     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
   },
 ];
-initialCards.forEach(item => addCard(item));
+
+export { validationConfig, initialCards as galleryMockData }
