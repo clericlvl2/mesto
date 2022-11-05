@@ -23,6 +23,8 @@ const cardImageInput = cardDataPopup.querySelector('.popup__form-input_data_card
 
 // popup zoom image
 const imageZoomPopup = document.querySelector('.popup_action_zoom');
+const zoomedImage = imageZoomPopup.querySelector('.popup__image');
+const zoomedText = imageZoomPopup.querySelector('.popup__image-subtitle');
 
 const popupList = [userDataPopup, cardDataPopup, imageZoomPopup];
 
@@ -43,6 +45,13 @@ function closePopup(popupElement) {
   popupElement.classList.remove('popup_opened');
 }
 
+function cardClickHandler(imageLink, titleText) {
+  zoomedImage.src = imageLink;
+  zoomedImage.alt = `Фото. ${titleText}`;
+  zoomedText.textContent = titleText;
+  openPopup(imageZoomPopup);
+}
+
 function exitPopupKeyHandler(evt) {
   if (evt.key === 'Escape' && document.querySelector('.popup_opened')) {
     closePopup(document.querySelector('.popup_opened'));
@@ -61,7 +70,7 @@ function exitPopupClickHandler(evt) {
 }
 
 function addCard(data) {
-  const newCard = new Card(data, 'js-card-template', openPopup).generateCard();
+  const newCard = new Card(data, 'js-card-template', cardClickHandler).generateCard();
   gallery.prepend(newCard);
 }
 

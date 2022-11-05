@@ -1,10 +1,14 @@
 export default class Card {
-  constructor(data, templateSelector, openImagePreview) {
-    this._image = data.link;
-    this._title = data.name;
+  constructor(data, templateSelector, cardClickHandler) {
     this._templateSelector = templateSelector;
-    this._element = null;
-    this._openImagePreview = openImagePreview;
+    this._cardClickHandler = cardClickHandler;
+    this._card = null;
+    this._cardTitle = null;
+    this._cardImage = null;
+    this._likeButton = null;
+    this._deleteButton = null;
+    this._titleText = data.name;
+    this._imageLink = data.link;
   }
 
   _getCardTemplate() {
@@ -23,40 +27,30 @@ export default class Card {
     evt.target.closest('.card').remove();
   }
 
-  _handleImageClick() {
-    const imageZoomPopup = document.querySelector('.popup_action_zoom');
-    const zoomedImage = imageZoomPopup.querySelector('.popup__image');
-    const zoomedText = imageZoomPopup.querySelector('.popup__image-subtitle');
-
-    zoomedImage.src = this._image;
-    zoomedImage.alt = `Фото. ${this._title}`;
-    zoomedText.textContent = this._title;
-    this._openImagePreview(imageZoomPopup);
-  }
-
   _setEventListeners() {
-    const cardLikeBtn = this._element.querySelector('.card__btn-like');
-    const cardDeleteBtn = this._element.querySelector('.card__btn-delete');
-    const cardImage = this._element.querySelector('.card__image');
-
-    cardLikeBtn.addEventListener('click', evt => {
+    this._likeButton.addEventListener('click', evt => {
       this._handleLikeBtn(evt);
     });
-    cardDeleteBtn.addEventListener('click', evt => {
+    this._deleteButton.addEventListener('click', evt => {
       this._handleDeleteBtn(evt);
     });
-    cardImage.addEventListener('click', () => {
-      this._handleImageClick();
+    this._cardImage.addEventListener('click', () => {
+      this._cardClickHandler(this._imageLink, this._titleText);
     });
   }
 
   generateCard() {
-    this._element = this._getCardTemplate();
-    this._setEventListeners();
-    this._element.querySelector('.card__title').textContent = this._title;
-    this._element.querySelector('.card__image').src = this._image;
-    this._element.querySelector('.card__image').alt = `Фото. ${this._title}`;
+    this._card = this._getCardTemplate();
+    this._cardTitle = this._card.querySelector('.card__title');
+    this._cardImage = this._card.querySelector('.card__image');
+    this._likeButton = this._card.querySelector('.card__btn-like');
+    this._deleteButton = this._card.querySelector('.card__btn-delete');
 
-    return this._element;
+    this._setEventListeners();
+    this._cardTitle.textContent = this._titleText;
+    this._cardImage.src = this._imageLink;
+    this._cardImage.alt = `Фото. ${this._titleText}`;
+
+    return this._card;
   }
 }
