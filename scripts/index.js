@@ -8,6 +8,7 @@ const userDescription = document.querySelector('.profile__description');
 const userEditBtn = document.querySelector('.profile__btn-edit');
 const cardAddBtn = document.querySelector('.profile__btn-add');
 const gallery = document.querySelector('.gallery__list');
+const cardTemplateId = 'js-card-template';
 
 // popup user data
 const userDataPopup = document.querySelector('.popup_action_edit');
@@ -69,9 +70,12 @@ function exitPopupClickHandler(evt) {
   }
 }
 
-function addCard(data) {
-  const newCard = new Card(data, 'js-card-template', cardClickHandler).generateCard();
-  gallery.prepend(newCard);
+function createCard(data) {
+  return new Card(data, cardTemplateId, cardClickHandler).generateCard();
+}
+
+function addCard(cardElement) {
+  gallery.prepend(cardElement);
 }
 
 function submitCardData(evt) {
@@ -80,7 +84,8 @@ function submitCardData(evt) {
     name: cardTitleInput.value,
     link: cardImageInput.value,
   };
-  addCard(data);
+  const newCard = createCard(data);
+  addCard(newCard);
   closePopup(cardDataPopup);
 }
 
@@ -109,4 +114,7 @@ popupList.forEach(popupElement => {
   popupElement.addEventListener('click', exitPopupClickHandler);
 });
 
-galleryMockData.forEach(item => addCard(item));
+galleryMockData.forEach(cardData => {
+  const newCard = createCard(cardData);
+  addCard(newCard);
+});
