@@ -22,18 +22,7 @@
     <button type="button" class="profile__btn-add"></button>
   </section>
   <section class="gallery" aria-label="Фото-галерея">
-    <ul class="gallery__list">
-      <template id="js-card-template">
-        <li class="gallery__item card">
-          <img src="." alt="Фото" class="card__image">
-          <div class="card__info">
-            <h2 class="card__title"></h2>
-            <button type="button" class="card__btn-like"></button>
-          </div>
-          <button type="button" class="card__btn-delete"></button>
-        </li>
-      </template>
-    </ul>
+    <ul class="gallery__list"></ul>
   </section>
 </main>
 <section class="popup popup_action_edit">
@@ -113,6 +102,19 @@
 <footer class="footer">
   <p class="footer__label">©&nbsp;2020&nbsp;Mesto&nbsp;Russia</p>
 </footer>
+
+<template id="js-card-template">
+  <li class="card">
+    <img src="." alt="Фото" class="card__image">
+    <div class="card__info">
+      <h2 class="card__title"></h2>
+      <button type="button" class="card__btn-like"></button>
+    </div>
+    <button type="button" class="card__btn-delete"></button>
+  </li>
+</template>
+
+<script type="module" src="./scripts/Section.js"></script>
 <script type="module" src="./scripts/Card.js"></script>
 <script type="module" src="./scripts/FormValidator.js"></script>
 <script type="module" src="./scripts/constants.js"></script>
