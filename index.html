@@ -22,30 +22,19 @@
     <button type="button" class="profile__btn-add"></button>
   </section>
   <section class="gallery" aria-label="Фото-галерея">
-    <ul class="gallery__list">
-      <template id="js-card-template">
-        <li class="gallery__item card">
-          <img src="." alt="Фото" class="card__image">
-          <div class="card__info">
-            <h2 class="card__title"></h2>
-            <button type="button" class="card__btn-like"></button>
-          </div>
-          <button type="button" class="card__btn-delete"></button>
-        </li>
-      </template>
-    </ul>
+    <ul class="gallery__list"></ul>
   </section>
 </main>
 <section class="popup popup_action_edit">
   <div class="popup__container">
     <h3 class="popup__title">Редактировать профиль</h3>
-    <form class="popup__form popup__form_data_profile"
+    <form class="popup__form popup__form_data_profile form"
           name="profile-data-form">
       <div class="popup__form-field">
         <input class="popup__form-input popup__form-input_data_name"
                type="text"
                id="profile-name"
-               name="profile-name"
+               name="profileName"
                placeholder="Имя"
                minlength="2"
                maxlength="40"
@@ -56,7 +45,7 @@
         <input class="popup__form-input popup__form-input_data_desc"
                type="text"
                id="profile-desc"
-               name="profile-desc"
+               name="profileDescription"
                placeholder="Вид деятельности"
                minlength="2"
                maxlength="200"
@@ -79,7 +68,7 @@
         <input class="popup__form-input popup__form-input_data_card-title"
                type="text"
                id="card-title"
-               name="card-title"
+               name="cardTitle"
                placeholder="Название места"
                minlength="2"
                maxlength="30"
@@ -90,7 +79,7 @@
         <input class="popup__form-input popup__form-input_data_card-image"
                type="url"
                id="card-image"
-               name="card-image"
+               name="cardImageUrl"
                placeholder="Ссылка на картинку"
                required>
         <span class="popup__form-error popup__form-error_data_card-image"></span>
@@ -113,9 +102,26 @@
 <footer class="footer">
   <p class="footer__label">©&nbsp;2020&nbsp;Mesto&nbsp;Russia</p>
 </footer>
+
+<template id="js-card-template">
+  <li class="card">
+    <img src="." alt="Фото" class="card__image">
+    <div class="card__info">
+      <h2 class="card__title"></h2>
+      <button type="button" class="card__btn-like"></button>
+    </div>
+    <button type="button" class="card__btn-delete"></button>
+  </li>
+</template>
+
+<script type="module" src="./scripts/constants.js"></script>
 <script type="module" src="./scripts/Card.js"></script>
 <script type="module" src="./scripts/FormValidator.js"></script>
-<script type="module" src="./scripts/constants.js"></script>
+<script type="module" src="./scripts/Popup.js"></script>
+<script type="module" src="./scripts/PopupWithForm.js"></script>
+<script type="module" src="./scripts/PopupWithImage.js"></script>
+<script type="module" src="./scripts/UserInfo.js"></script>
+<script type="module" src="./scripts/Section.js"></script>
 <script type="module" src="./scripts/index.js"></script>
 </body>
 </html>

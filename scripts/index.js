@@ -1,120 +1,101 @@
-import Card from './Card.js';
-import FormValidator from './FormValidator.js';
 import { validationConfig, galleryMockData } from './constants.js';
+import Card from './Card.js';
+import Section from "./Section.js";
+import PopupWithForm from "./PopupWithForm.js";
+import PopupWithImage from "./PopupWithImage.js";
+import FormValidator from './FormValidator.js';
+import UserInfo from "./UserInfo.js";
 
-// page
-const userName = document.querySelector('.profile__name');
-const userDescription = document.querySelector('.profile__description');
+// selectors
+const cardListSelector = '.gallery__list';
+const cardTemplateId = 'js-card-template';
+const userDataPopupSelector = '.popup_action_edit';
+const cardDataPopupSelector = '.popup_action_add';
+const imageZoomPopupSelector = '.popup_action_zoom';
+const userNameSelector = '.profile__name';
+const userDescriptionSelector = '.profile__description';
+
+// buttons
 const userEditBtn = document.querySelector('.profile__btn-edit');
 const cardAddBtn = document.querySelector('.profile__btn-add');
-const gallery = document.querySelector('.gallery__list');
-const cardTemplateId = 'js-card-template';
 
 // popup user data
-const userDataPopup = document.querySelector('.popup_action_edit');
-const userDataForm = userDataPopup.querySelector('.popup__form_data_profile');
-const userNameInput = userDataPopup.querySelector('.popup__form-input_data_name');
-const userDescriptionInput = userDataPopup.querySelector('.popup__form-input_data_desc');
+const userDataPopupElement = document.querySelector('.popup_action_edit');
+const userDataForm = userDataPopupElement.querySelector('.popup__form_data_profile');
+const userNameInput = userDataPopupElement.querySelector('.popup__form-input_data_name');
+const userDescriptionInput = userDataPopupElement.querySelector('.popup__form-input_data_desc');
 
 // popup card data
-const cardDataPopup = document.querySelector('.popup_action_add');
-const cardDataForm = cardDataPopup.querySelector('.popup__form_data_card');
-const cardTitleInput = cardDataPopup.querySelector('.popup__form-input_data_card-title');
-const cardImageInput = cardDataPopup.querySelector('.popup__form-input_data_card-image');
-
-// popup zoom image
-const imageZoomPopup = document.querySelector('.popup_action_zoom');
-const zoomedImage = imageZoomPopup.querySelector('.popup__image');
-const zoomedText = imageZoomPopup.querySelector('.popup__image-subtitle');
-
-const popupList = [userDataPopup, cardDataPopup, imageZoomPopup];
+const cardDataPopupElement = document.querySelector('.popup_action_add');
+const cardDataForm = cardDataPopupElement.querySelector('.popup__form_data_card');
+const cardTitleInput = cardDataPopupElement.querySelector('.popup__form-input_data_card-title');
+const cardImageInput = cardDataPopupElement.querySelector('.popup__form-input_data_card-image');
 
 // enable validation
 const userFormValidator = new FormValidator(validationConfig, userDataForm);
 const cardFormValidator = new FormValidator(validationConfig, cardDataForm);
+
 userFormValidator.enableValidation();
 cardFormValidator.enableValidation();
 
-// app logic functions
-function openPopup(popupElement) {
-  document.addEventListener('keydown', exitPopupKeyHandler);
-  popupElement.classList.add('popup_opened');
-}
-
-function closePopup(popupElement) {
-  document.removeEventListener('keydown', exitPopupKeyHandler);
-  popupElement.classList.remove('popup_opened');
-}
-
-function cardClickHandler(imageLink, titleText) {
-  zoomedImage.src = imageLink;
-  zoomedImage.alt = `Фото. ${titleText}`;
-  zoomedText.textContent = titleText;
-  openPopup(imageZoomPopup);
-}
-
-function exitPopupKeyHandler(evt) {
-  if (evt.key === 'Escape' && document.querySelector('.popup_opened')) {
-    closePopup(document.querySelector('.popup_opened'));
+// init app components
+const userInfo = new UserInfo(userNameSelector, userDescriptionSelector);
+const userDataPopup = new PopupWithForm(userDataPopupSelector, submitUserData);
+const cardDataPopup = new PopupWithForm(cardDataPopupSelector, submitCardData);
+const imageZoomPopup = new PopupWithImage(imageZoomPopupSelector);
+const cardList = new Section({
+  items: galleryMockData,
+  renderer: cardData => {
+    const card = createCard(cardData);
+    cardList.addItem(card);
   }
-}
+}, cardListSelector);
 
-function exitPopupClickHandler(evt) {
-  const isOverlay = evt.target === evt.currentTarget;
-  const isExitBtn = evt.target.classList.contains('popup__btn-exit');
-  if (isOverlay) {
-    closePopup(evt.currentTarget);
-  }
-  if (isExitBtn) {
-    closePopup(evt.currentTarget);
-  }
-}
+// set event listeners
+userDataPopup.setEventListeners();
+cardDataPopup.setEventListeners();
+imageZoomPopup.setEventListeners();
 
+userEditBtn.addEventListener('click', () => {
+  const { userName, userDescription } = userInfo.getUserInfo();
+  userDataPopup.openPopup();
+  userNameInput.value = userName;
+  userDescriptionInput.value = userDescription;
+  userFormValidator.clearFormStyles();
+});
+
+cardAddBtn.addEventListener('click', () => {
+  cardDataPopup.openPopup();
+  cardFormValidator.clearFormStyles();
+});
+
+// callback functions
 function createCard(data) {
   return new Card(data, cardTemplateId, cardClickHandler).generateCard();
 }
 
-function addCard(cardElement) {
-  gallery.prepend(cardElement);
+function cardClickHandler(imageLink, titleText) {
+  imageZoomPopup.openPopup(imageLink, titleText);
 }
 
 function submitCardData(evt) {
   evt.preventDefault();
-  const data = {
+  const cardData = {
     name: cardTitleInput.value,
     link: cardImageInput.value,
   };
-  const newCard = createCard(data);
-  addCard(newCard);
-  closePopup(cardDataPopup);
+  const card = createCard(cardData);
+  cardList.addItem(card);
+  cardDataPopup.closePopup();
 }
 
-function submitUserData(event) {
-  event.preventDefault();
-  userName.textContent = userNameInput.value;
-  userDescription.textContent = userDescriptionInput.value;
-  closePopup(userDataPopup);
+function submitUserData(evt) {
+  evt.preventDefault();
+  userInfo.setUserInfo({
+    userName: userNameInput.value,
+    userDescription: userDescriptionInput.value,
+  })
+  userDataPopup.closePopup();
 }
 
-// set popups, forms and buttons event listeners
-userDataForm.addEventListener('submit', submitUserData);
-cardDataForm.addEventListener('submit', submitCardData);
-userEditBtn.addEventListener('click', () => {
-  userNameInput.value = userName.textContent;
-  userDescriptionInput.value = userDescription.textContent;
-  userFormValidator.clearFormStyles();
-  openPopup(userDataPopup);
-});
-cardAddBtn.addEventListener('click', () => {
-  cardDataForm.reset();
-  cardFormValidator.clearFormStyles();
-  openPopup(cardDataPopup);
-});
-popupList.forEach(popupElement => {
-  popupElement.addEventListener('click', exitPopupClickHandler);
-});
-
-galleryMockData.forEach(cardData => {
-  const newCard = createCard(cardData);
-  addCard(newCard);
-});
+cardList.render();
