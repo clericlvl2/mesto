@@ -5,8 +5,8 @@
   margin: 0 auto;
   padding: 0 0 60px 0;
   display: flex;
-  justify-content: start;
-  align-items: start;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 
 @media screen and (max-width: 540px) {

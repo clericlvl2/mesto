@@ -1,7 +1,7 @@
 .popup__form-field {
   display: flex;
-  justify-content: start;
-  align-items: start;
+  justify-content: flex-start;
+  align-items: flex-start;
   flex-flow: column;
   min-height: 38px;
   margin: 0;
