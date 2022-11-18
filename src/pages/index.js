@@ -16,23 +16,15 @@ const imageZoomPopupSelector = '.popup_action_zoom';
 const userNameSelector = '.profile__name';
 const userDescriptionSelector = '.profile__description';
 
-// buttons
+// dom elements
 const userEditBtn = document.querySelector('.profile__btn-edit');
 const cardAddBtn = document.querySelector('.profile__btn-add');
+const userDataForm = document.querySelector('.popup__form_data_profile');
+const cardDataForm = document.querySelector('.popup__form_data_card');
+const userNameInput = document.querySelector('.popup__form-input_data_name');
+const userDescriptionInput = document.querySelector('.popup__form-input_data_desc');
 
-// popup user data
-const userDataPopupElement = document.querySelector('.popup_action_edit');
-const userDataForm = userDataPopupElement.querySelector('.popup__form_data_profile');
-const userNameInput = userDataPopupElement.querySelector('.popup__form-input_data_name');
-const userDescriptionInput = userDataPopupElement.querySelector('.popup__form-input_data_desc');
-
-// popup card data
-const cardDataPopupElement = document.querySelector('.popup_action_add');
-const cardDataForm = cardDataPopupElement.querySelector('.popup__form_data_card');
-const cardTitleInput = cardDataPopupElement.querySelector('.popup__form-input_data_card-title');
-const cardImageInput = cardDataPopupElement.querySelector('.popup__form-input_data_card-image');
-
-// enable validation
+// validators
 const userFormValidator = new FormValidator(validationConfig, userDataForm);
 const cardFormValidator = new FormValidator(validationConfig, cardDataForm);
 
@@ -79,23 +71,17 @@ function cardClickHandler(imageLink, titleText) {
   imageZoomPopup.openPopup(imageLink, titleText);
 }
 
-function submitCardData(evt) {
-  evt.preventDefault();
-  const cardData = {
-    name: cardTitleInput.value,
-    link: cardImageInput.value,
-  };
-  const card = createCard(cardData);
+function submitCardData({ cardTitle, cardImageUrl }) {
+  const card = createCard({
+    name: cardTitle,
+    link: cardImageUrl,
+  });
   cardList.addItem(card);
   cardDataPopup.closePopup();
 }
 
-function submitUserData(evt) {
-  evt.preventDefault();
-  userInfo.setUserInfo({
-    userName: userNameInput.value,
-    userDescription: userDescriptionInput.value,
-  })
+function submitUserData({ userName, userDescription }) {
+  userInfo.setUserInfo({ userName, userDescription })
   userDataPopup.closePopup();
 }
 
