@@ -19,17 +19,18 @@ export default class Card {
       .cloneNode(true);
   }
 
-  _handleLikeBtn(evt) {
-    evt.target.classList.toggle('card__btn-like_active');
+  _handleLikeBtn() {
+    this._likeButton.classList.toggle('card__btn-like_active');
   }
 
-  _handleDeleteBtn(evt) {
-    evt.target.closest('.card').remove();
+  _handleDeleteBtn() {
+    this._card.remove();
+    this._card = null;
   }
 
   _setEventListeners() {
-    this._likeButton.addEventListener('click', this._handleLikeBtn);
-    this._deleteButton.addEventListener('click', this._handleDeleteBtn);
+    this._likeButton.addEventListener('click', this._handleLikeBtn.bind(this));
+    this._deleteButton.addEventListener('click', this._handleDeleteBtn.bind(this));
     this._cardImage.addEventListener('click', () => {
       this._cardClickHandler(this._imageLink, this._titleText);
     });
