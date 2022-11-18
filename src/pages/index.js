@@ -1,10 +1,11 @@
-import { validationConfig, galleryMockData } from './constants.js';
-import Card from './Card.js';
-import Section from "./Section.js";
-import PopupWithForm from "./PopupWithForm.js";
-import PopupWithImage from "./PopupWithImage.js";
-import FormValidator from './FormValidator.js';
-import UserInfo from "./UserInfo.js";
+import './index.css';
+import { validationConfig, galleryMockData } from '../scripts/constants.js';
+import Card from '../scripts/Card.js';
+import Section from "../scripts/Section.js";
+import PopupWithForm from "../scripts/PopupWithForm.js";
+import PopupWithImage from "../scripts/PopupWithImage.js";
+import FormValidator from '../scripts/FormValidator.js';
+import UserInfo from "../scripts/UserInfo.js";
 
 // selectors
 const cardListSelector = '.gallery__list';
