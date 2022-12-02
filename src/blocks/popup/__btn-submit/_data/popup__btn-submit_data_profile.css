@@ -1,0 +1,9 @@
+.popup__btn-submit_data_profile {
+  margin: 17px 0 0 0;
+}
+
+@media screen and (max-width: 540px) {
+  .popup__btn-submit_data_profile {
+    margin-top: 13px;
+  }
+}
