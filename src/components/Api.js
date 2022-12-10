@@ -1,15 +1,12 @@
 export default class Api {
-  constructor() {
-    this._token = 'dada8704-016b-43db-b43a-5dfe373a30d9';
-    this._queryBase = 'https://mesto.nomoreparties.co/v1/cohort-55'
+  constructor(options) {
+    this._baseUrl = options.baseUrl;
+    this._headers = options.headers;
   }
 
   getUserData() {
-    const query = this._queryBase + '/users/me';
-    return fetch(query, {
-      headers: {
-        authorization: this._token
-      }
+    return fetch(`${this._baseUrl}/users/me`, {
+      headers: this._headers
     })
       .then(res => {
         if (res.ok) {
@@ -23,13 +20,9 @@ export default class Api {
   }
 
   updateUserInfo(data) {
-    const query = this._queryBase + '/users/me';
-    return fetch(query, {
+    return fetch(`${this._baseUrl}/users/me`, {
       method: 'PATCH',
-      headers: {
-        authorization: this._token,
-        'Content-Type': 'application/json'
-      },
+      headers: this._headers,
       body: JSON.stringify(data)
     })
       .then(res => {
@@ -44,13 +37,9 @@ export default class Api {
   }
 
   updateUserAvatar(data) {
-    const query = this._queryBase + '/users/me/avatar';
-    return fetch(query, {
+    return fetch(`${this._baseUrl}/users/me/avatar`, {
       method: 'PATCH',
-      headers: {
-        authorization: this._token,
-        'Content-Type': 'application/json'
-      },
+      headers: this._headers,
       body: JSON.stringify(data)
     })
       .then(res => {
@@ -65,11 +54,8 @@ export default class Api {
   }
 
   getAllCards() {
-    const query = this._queryBase + '/cards';
-    return fetch(query, {
-      headers: {
-        authorization: this._token
-      }
+    return fetch(`${this._baseUrl}/cards`, {
+      headers: this._headers
     })
       .then(res => {
         if (res.ok) {
@@ -83,13 +69,9 @@ export default class Api {
   }
 
   addNewCard(data) {
-    const query = this._queryBase + '/cards';
-    return fetch(query, {
+    return fetch(`${this._baseUrl}/cards`, {
       method: 'POST',
-      headers: {
-        authorization: this._token,
-        'Content-Type': 'application/json'
-      },
+      headers: this._headers,
       body: JSON.stringify(data)
     })
       .then(res => {
@@ -104,12 +86,9 @@ export default class Api {
   }
 
   deleteCard(cardId) {
-    const query = this._queryBase + '/cards' +`/${cardId}`;
-    return fetch(query, {
+    return fetch(`${this._baseUrl}/cards/${cardId}`, {
       method: 'DELETE',
-      headers: {
-        authorization: this._token,
-      }
+      headers: this._headers
     })
       .then(res => {
         if (res.ok) {
@@ -123,12 +102,9 @@ export default class Api {
   }
 
   setCardLike(cardId) {
-    const query = this._queryBase + '/cards' +`/${cardId}` + '/likes';
-    return fetch(query, {
+    return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
       method: 'PUT',
-      headers: {
-        authorization: this._token,
-      }
+      headers: this._headers
     })
       .then(res => {
         if (res.ok) {
@@ -142,12 +118,9 @@ export default class Api {
   }
 
   unsetCardLike(cardId) {
-    const query = this._queryBase + '/cards' +`/${cardId}` + '/likes';
-    return fetch(query, {
+    return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
       method: 'DELETE',
-      headers: {
-        authorization: this._token,
-      }
+      headers: this._headers
     })
       .then(res => {
         if (res.ok) {
@@ -159,7 +132,4 @@ export default class Api {
         console.error(err);
       });
   }
-
-
-
 }
