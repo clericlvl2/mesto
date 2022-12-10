@@ -12,11 +12,14 @@
 </header>
 <main>
   <section class="profile">
-    <img src="<%=require('./images/userpic-jacques.jpg')%>" alt="Фото пользователя" class="profile__image">
+    <div class="profile__image-container">
+      <img src="<%=require('./images/userpic-jacques.jpg')%>" alt="Фото пользователя" class="profile__image">
+      <button type="button" class="profile__btn-edit-image"></button>
+    </div>
     <div class="profile__info">
-      <h1 class="profile__name">Жак-Ив Кусто</h1>
+      <h1 class="profile__name">Имя...</h1>
       <button type="button" class="profile__btn-edit"></button>
-      <p class="profile__description">Исследователь океана</p>
+      <p class="profile__description">Описание...</p>
     </div>
     <button type="button" class="profile__btn-add"></button>
   </section>
@@ -95,6 +98,28 @@
   <div class="popup__image-container">
     <img src="." alt="Фото" class="popup__image">
     <p class="popup__image-subtitle"></p>
+    <button type="button" class="popup__btn-exit"></button>
+  </div>
+</section>
+<section class="popup popup_action_edit-avatar">
+  <div class="popup__container popup__container_size_small">
+    <h3 class="popup__title popup__title_type_confirmation">Обновить аватар</h3>
+    <form class="popup__form popup__form_data_user-avatar form"
+          name="user-avatar-form">
+      <div class="popup__form-field">
+        <input class="popup__form-input popup__form-input_data_user-avatar"
+               type="url"
+               id="user-avatar"
+               name="userAvatar"
+               placeholder="Ссылка на аватар пользователя"
+               required>
+        <span class="popup__form-error popup__form-error_data_user-avatar"></span>
+      </div>
+      <button class="popup__btn-submit popup__btn-submit_data_user-avatar"
+              type="submit">
+        Сохранить
+      </button>
+    </form>
     <button type="button" class="popup__btn-exit"></button>
   </div>
 </section>
