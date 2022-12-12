@@ -132,4 +132,14 @@ export default class Api {
         console.error(err);
       });
   }
+
+  initializeAppData() {
+    return Promise.all([
+      this.getUserData(),
+      this.getAllCards()
+    ])
+      .catch(err => {
+        console.error(err);
+      })
+  }
 }
