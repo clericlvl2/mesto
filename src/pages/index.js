@@ -1,5 +1,5 @@
 import './index.css';
-import { validationConfig, galleryMockData } from '../utils/constants.js';
+import { validationConfig } from '../utils/constants.js';
 import Card from '../components/Card.js';
 import Section from "../components/Section.js";
 import PopupWithForm from "../components/PopupWithForm.js";
@@ -7,14 +7,16 @@ import PopupWithImage from "../components/PopupWithImage.js";
 import FormValidator from '../components/FormValidator.js';
 import UserInfo from "../components/UserInfo.js";
 import Api from "../components/Api";
+import PopupWithConfirmation from "../components/PopupWithConfirmation";
 
 // selectors
-const cardListSelector = '.gallery__list';
+const gallerySelector = '.gallery__list';
 const cardTemplateId = 'js-card-template';
 const userDataPopupSelector = '.popup_action_edit';
 const userAvatarPopupSelector = '.popup_action_edit-avatar';
 const cardDataPopupSelector = '.popup_action_add';
 const imageZoomPopupSelector = '.popup_action_zoom';
+const confirmationPopupSelector = '.popup_action_confirm';
 const userNameSelector = '.profile__name';
 const userDescriptionSelector = '.profile__description';
 const userAvatarSelector = '.profile__image';
@@ -48,108 +50,143 @@ const api = new Api({
   }
 });
 
-// init app components
-const userInfo = new UserInfo(userNameSelector, userDescriptionSelector, userAvatarSelector);
-const userAvatarPopup = new PopupWithForm(userAvatarPopupSelector, submitUserAvatarData);
-const userDataPopup = new PopupWithForm(userDataPopupSelector, submitUserData);
-const cardDataPopup = new PopupWithForm(cardDataPopupSelector, submitCardData);
-const imageZoomPopup = new PopupWithImage(imageZoomPopupSelector);
-const cardList = new Section({
-  items: galleryMockData,
-  renderer: cardData => {
-    const card = createCard(cardData);
-    cardList.addItem(card);
-  }
-}, cardListSelector);
+api.initializeAppData()
+  .then(([userData, cardsList]) => {
 
-// set event listeners
-userDataPopup.setEventListeners();
-userAvatarPopup.setEventListeners();
-cardDataPopup.setEventListeners();
-imageZoomPopup.setEventListeners();
+    // init app components
+    const userInfo = new UserInfo(userNameSelector, userDescriptionSelector, userAvatarSelector);
+    const userAvatarPopup = new PopupWithForm(userAvatarPopupSelector, submitUserAvatarData);
+    const userDataPopup = new PopupWithForm(userDataPopupSelector, submitUserData);
+    const cardDataPopup = new PopupWithForm(cardDataPopupSelector, submitCardData);
+    const imageZoomPopup = new PopupWithImage(imageZoomPopupSelector);
+    const confirmationPopup = new PopupWithConfirmation(confirmationPopupSelector, confirmDeleteHandler);
 
-userEditBtn.addEventListener('click', () => {
-  const { userName, userDescription } = userInfo.getUserInfo();
-  userDataPopup.openPopup();
-  userNameInput.value = userName;
-  userDescriptionInput.value = userDescription;
-  userFormValidator.clearFormStyles();
-});
+    // set event listeners
+    userDataPopup.setEventListeners();
+    userAvatarPopup.setEventListeners();
+    cardDataPopup.setEventListeners();
+    imageZoomPopup.setEventListeners();
+    confirmationPopup.setEventListeners();
 
-userEditAvatarBtn.addEventListener('click', () => {
-  const { userAvatar } = userInfo.getUserInfo();
-  userAvatarPopup.openPopup();
-  userAvatarInput.value = userAvatar;
-  userAvatarFormValidator.clearFormStyles();
-})
-
-cardAddBtn.addEventListener('click', () => {
-  cardDataPopup.openPopup();
-  cardFormValidator.clearFormStyles();
-});
-
-// callback functions
-function createCard(data) {
-  return new Card(data, cardTemplateId, cardClickHandler).generateCard();
-}
-
-function cardClickHandler(imageLink, titleText) {
-  imageZoomPopup.openPopup(imageLink, titleText);
-}
-
-function submitCardData({ cardTitle, cardImageUrl }) {
-  const card = createCard({
-    name: cardTitle,
-    link: cardImageUrl,
-  });
-  cardList.addItem(card);
-  cardDataPopup.closePopup();
-}
-
-function submitUserData({ userName, userDescription }) {
-  userDataPopup.renderLoading(true);
-  api.updateUserInfo({
-    name: userName,
-    about: userDescription
-  })
-    .then(user => {
-      userInfo.setUserInfo({
-        userName: user.name,
-        userDescription: user.about
-      });
-    })
-    .finally(() => {
-      userDataPopup.closePopup();
-      userDataPopup.renderLoading(false);
+    userEditBtn.addEventListener('click', () => {
+      const {userName, userDescription} = userInfo.getUserInfo();
+      userDataPopup.openPopup();
+      userNameInput.value = userName;
+      userDescriptionInput.value = userDescription;
+      userFormValidator.clearFormStyles();
     });
-}
 
-function submitUserAvatarData({ userAvatar }) {
-  userAvatarPopup.renderLoading(true);
-  api.updateUserAvatar({
-    avatar: userAvatar
-  })
-    .then((user) => {
-      userInfo.setUserInfo({
-        userAvatar: user.avatar
+    userEditAvatarBtn.addEventListener('click', () => {
+      const {userAvatar} = userInfo.getUserInfo();
+      userAvatarPopup.openPopup();
+      userAvatarInput.value = userAvatar;
+      userAvatarFormValidator.clearFormStyles();
+    })
+
+    cardAddBtn.addEventListener('click', () => {
+      cardDataPopup.openPopup();
+      cardFormValidator.clearFormStyles();
+    });
+
+    // callback functions
+    function cardClickHandler(imageLink, titleText) {
+      imageZoomPopup.openPopup(imageLink, titleText);
+    }
+
+    function likeClickHandler(cardId, isLiked) {
+      return (isLiked) ? api.unsetCardLike(cardId) : api.setCardLike(cardId);
+    }
+
+    function deleteClickHanker(data) {
+      confirmationPopup.openPopup(data);
+    }
+
+    function confirmDeleteHandler({card, cardId}) {
+      confirmationPopup.renderLoading(true);
+      return api.deleteCard(cardId)
+        .then(() => {
+          card.remove()
+        })
+        .finally(() => {
+          confirmationPopup.closePopup();
+          confirmationPopup.renderLoading(false);
+
+        });
+    }
+
+    function createCard(cardData) {
+      return new Card({
+        cardData,
+        userData,
+        cardClickHandler,
+        likeClickHandler,
+        deleteClickHanker
+      }, cardTemplateId).generateCard();
+    }
+
+    function submitCardData({ cardTitle, cardImageUrl }) {
+      cardDataPopup.renderLoading(true);
+      api.addNewCard({
+        name: cardTitle,
+        link: cardImageUrl
       })
-    })
-    .finally(() => {
-      userAvatarPopup.closePopup();
-      userAvatarPopup.renderLoading(false);
-    });
-}
+        .then(cardData => {
+          const card = createCard(cardData);
+          gallery.addItem(card);
+        })
+        .finally(() => {
+          cardDataPopup.closePopup();
+          cardDataPopup.renderLoading(false);
+        })
+    }
 
-function renderUserData() {
-  api.getUserData().then(user => {
+    function submitUserData({userName, userDescription}) {
+      userDataPopup.renderLoading(true);
+      api.updateUserInfo({
+        name: userName,
+        about: userDescription
+      })
+        .then(user => {
+          userInfo.setUserInfo({
+            userName: user.name,
+            userDescription: user.about
+          });
+        })
+        .finally(() => {
+          userDataPopup.closePopup();
+          userDataPopup.renderLoading(false);
+        });
+    }
+
+    function submitUserAvatarData({userAvatar}) {
+      userAvatarPopup.renderLoading(true);
+      api.updateUserAvatar({
+        avatar: userAvatar
+      })
+        .then((user) => {
+          userInfo.setUserInfo({
+            userAvatar: user.avatar
+          })
+        })
+        .finally(() => {
+          userAvatarPopup.closePopup();
+          userAvatarPopup.renderLoading(false);
+        });
+    }
+
     userInfo.setUserInfo({
-      userName: user.name,
-      userDescription: user.about,
-      userAvatar: user.avatar
+      userName: userData.name,
+      userDescription: userData.about,
+      userAvatar: userData.avatar
     });
+
+    const gallery = new Section({
+      items: cardsList.reverse(),
+      renderer: cardData => {
+        const card = createCard(cardData);
+        gallery.addItem(card);
+      }
+    }, gallerySelector);
+
+    gallery.render();
   })
-}
-
-
-renderUserData();
-cardList.render();
