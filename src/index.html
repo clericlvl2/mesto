@@ -103,7 +103,7 @@
 </section>
 <section class="popup popup_action_edit-avatar">
   <div class="popup__container popup__container_size_small">
-    <h3 class="popup__title popup__title_type_confirmation">Обновить аватар</h3>
+    <h3 class="popup__title popup__title_window-size_small">Обновить аватар</h3>
     <form class="popup__form popup__form_data_user-avatar form"
           name="user-avatar-form">
       <div class="popup__form-field">
@@ -123,10 +123,10 @@
     <button type="button" class="popup__btn-exit"></button>
   </div>
 </section>
-<section class="popup popup_action_delete-card">
+<section class="popup popup_action_confirm">
   <div class="popup__container popup__container_size_small">
-    <h3 class="popup__title popup__title_type_confirmation">Вы уверены?</h3>
-    <button class="popup__btn-submit">Да</button>
+    <h3 class="popup__title popup__title_window-size_small">Вы уверены?</h3>
+    <button type="button" class="popup__btn-submit">Да</button>
     <button type="button" class="popup__btn-exit"></button>
   </div>
 </section>
@@ -139,7 +139,10 @@
     <img src="." alt="Фото" class="card__image">
     <div class="card__info">
       <h2 class="card__title"></h2>
-      <button type="button" class="card__btn-like"></button>
+      <div class="card__like-container">
+        <button type="button" class="card__btn-like"></button>
+        <span class="card__like-indicator">0</span>
+      </div>
     </div>
     <button type="button" class="card__btn-delete"></button>
   </li>
