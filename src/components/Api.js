@@ -4,19 +4,18 @@ export default class Api {
     this._headers = options.headers;
   }
 
+  _handleResponse(res) {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(`Что-то пошло не так: ошибка ${res.status}`);
+  }
+
   getUserData() {
     return fetch(`${this._baseUrl}/users/me`, {
       headers: this._headers
     })
-      .then(res => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Что-то пошло не так: ошибка ${res.status}`);
-      })
-      .catch(err => {
-        console.error(err);
-      });
+      .then(this._handleResponse);
   }
 
   updateUserInfo(data) {
@@ -25,15 +24,7 @@ export default class Api {
       headers: this._headers,
       body: JSON.stringify(data)
     })
-      .then(res => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Что-то пошло не так: ошибка  ${res.status}`);
-      })
-      .catch(err => {
-        console.error(err);
-      });
+      .then(this._handleResponse);
   }
 
   updateUserAvatar(data) {
@@ -42,30 +33,14 @@ export default class Api {
       headers: this._headers,
       body: JSON.stringify(data)
     })
-      .then(res => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Что-то пошло не так: ошибка ${res.status}`);
-      })
-      .catch(err => {
-        console.error(err);
-      });
+      .then(this._handleResponse);
   }
 
   getAllCards() {
     return fetch(`${this._baseUrl}/cards`, {
       headers: this._headers
     })
-      .then(res => {
-        if (res.ok) {
-          return res.json()
-        }
-        return Promise.reject(`Что-то пошло не так: ошибка ${res.status}`)
-      })
-      .catch(err => {
-        console.error(err);
-      })
+      .then(this._handleResponse);
   }
 
   addNewCard(data) {
@@ -74,15 +49,7 @@ export default class Api {
       headers: this._headers,
       body: JSON.stringify(data)
     })
-      .then(res => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Что-то пошло не так: ошибка ${res.status}`);
-      })
-      .catch(err => {
-        console.error(err);
-      });
+      .then(this._handleResponse);
   }
 
   deleteCard(cardId) {
@@ -90,15 +57,7 @@ export default class Api {
       method: 'DELETE',
       headers: this._headers
     })
-      .then(res => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Что-то пошло не так: ошибка ${res.status}`);
-      })
-      .catch(err => {
-        console.error(err);
-      });
+      .then(this._handleResponse);
   }
 
   setCardLike(cardId) {
@@ -106,15 +65,7 @@ export default class Api {
       method: 'PUT',
       headers: this._headers
     })
-      .then(res => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Что-то пошло не так: ошибка ${res.status}`);
-      })
-      .catch(err => {
-        console.error(err);
-      });
+      .then(this._handleResponse);
   }
 
   unsetCardLike(cardId) {
@@ -122,15 +73,7 @@ export default class Api {
       method: 'DELETE',
       headers: this._headers
     })
-      .then(res => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Что-то пошло не так: ошибка ${res.status}`);
-      })
-      .catch(err => {
-        console.error(err);
-      });
+      .then(this._handleResponse);
   }
 
   initializeAppData() {
@@ -138,8 +81,5 @@ export default class Api {
       this.getUserData(),
       this.getAllCards()
     ])
-      .catch(err => {
-        console.error(err);
-      })
   }
 }
