@@ -1,5 +1,5 @@
 import './index.css';
-import { validationConfig } from '../utils/constants.js';
+import {validationConfig} from '../utils/constants.js';
 import Card from '../components/Card.js';
 import Section from "../components/Section.js";
 import PopupWithForm from "../components/PopupWithForm.js";
@@ -30,15 +30,12 @@ const userAvatarForm = document.querySelector('.popup__form_data_user-avatar')
 const cardDataForm = document.querySelector('.popup__form_data_card');
 const userNameInput = document.querySelector('.popup__form-input_data_name');
 const userDescriptionInput = document.querySelector('.popup__form-input_data_desc');
-const userAvatarInput = document.querySelector('.popup__form-input_data_user-avatar');
 
 // validators
 const userFormValidator = new FormValidator(validationConfig, userDataForm);
 const userAvatarFormValidator = new FormValidator(validationConfig, userAvatarForm);
-const cardFormValidator = new FormValidator(validationConfig, cardDataForm);
 
 userFormValidator.enableValidation();
-cardFormValidator.enableValidation();
 userAvatarFormValidator.enableValidation();
 
 // api
@@ -50,69 +47,118 @@ const api = new Api({
   }
 });
 
+// init app components
+const userInfo = new UserInfo(userNameSelector, userDescriptionSelector, userAvatarSelector);
+const userAvatarPopup = new PopupWithForm(userAvatarPopupSelector, submitUserAvatarData);
+const userDataPopup = new PopupWithForm(userDataPopupSelector, submitUserData);
+const imageZoomPopup = new PopupWithImage(imageZoomPopupSelector);
+const confirmationPopup = new PopupWithConfirmation(confirmationPopupSelector, confirmDeleteHandler);
+
+// set event listeners
+userDataPopup.setEventListeners();
+userAvatarPopup.setEventListeners();
+imageZoomPopup.setEventListeners();
+confirmationPopup.setEventListeners();
+
+userEditBtn.addEventListener('click', () => {
+  const {userName, userDescription} = userInfo.getUserInfo();
+  userDataPopup.openPopup();
+  userNameInput.value = userName;
+  userDescriptionInput.value = userDescription;
+  userFormValidator.clearFormStyles();
+});
+
+userEditAvatarBtn.addEventListener('click', () => {
+  userAvatarPopup.openPopup();
+  userAvatarFormValidator.clearFormStyles();
+})
+
+// callback functions
+function cardClickHandler(imageLink, titleText) {
+  imageZoomPopup.openPopup(imageLink, titleText);
+}
+
+function likeClickHandler(card, isLiked) {
+  const cardId = card.getCardId();
+  const updateCard = this.updateCard.bind(this);
+  if (isLiked) {
+    api.unsetCardLike(cardId)
+      .then(updateCard)
+      .catch(console.error);
+  } else {
+    api.setCardLike(cardId)
+      .then(updateCard)
+      .catch(console.error);
+  }
+}
+
+function deleteClickHanker(data) {
+  confirmationPopup.openPopup(data);
+}
+
+function confirmDeleteHandler(card) {
+  const cardId = card.getCardId();
+  confirmationPopup.renderLoading(true);
+  return api.deleteCard(cardId)
+    .then(() => {
+      card.removeCard();
+      confirmationPopup.closePopup();
+    })
+    .catch(console.error)
+    .finally(() => {
+      confirmationPopup.renderLoading(false);
+    });
+}
+
+
+function submitUserData({userName, userDescription}) {
+  userDataPopup.renderLoading(true);
+  api.updateUserInfo({
+    name: userName,
+    about: userDescription
+  })
+    .then(user => {
+      userInfo.setUserInfo({
+        userName: user.name,
+        userDescription: user.about
+      });
+      userDataPopup.closePopup();
+    })
+    .catch(console.error)
+    .finally(() => {
+      userDataPopup.renderLoading(false);
+    });
+}
+
+function submitUserAvatarData({userAvatar}) {
+  userAvatarPopup.renderLoading(true);
+  api.updateUserAvatar({
+    avatar: userAvatar
+  })
+    .then((user) => {
+      userInfo.setUserInfo({
+        userAvatar: user.avatar
+      })
+      userAvatarPopup.closePopup();
+    })
+    .catch(console.error)
+    .finally(() => {
+      userAvatarPopup.renderLoading(false);
+    });
+}
+
 api.initializeAppData()
   .then(([userData, cardsList]) => {
-
-    // init app components
-    const userInfo = new UserInfo(userNameSelector, userDescriptionSelector, userAvatarSelector);
-    const userAvatarPopup = new PopupWithForm(userAvatarPopupSelector, submitUserAvatarData);
-    const userDataPopup = new PopupWithForm(userDataPopupSelector, submitUserData);
+    // card related app components
+    const cardFormValidator = new FormValidator(validationConfig, cardDataForm);
     const cardDataPopup = new PopupWithForm(cardDataPopupSelector, submitCardData);
-    const imageZoomPopup = new PopupWithImage(imageZoomPopupSelector);
-    const confirmationPopup = new PopupWithConfirmation(confirmationPopupSelector, confirmDeleteHandler);
 
-    // set event listeners
-    userDataPopup.setEventListeners();
-    userAvatarPopup.setEventListeners();
+    cardFormValidator.enableValidation();
     cardDataPopup.setEventListeners();
-    imageZoomPopup.setEventListeners();
-    confirmationPopup.setEventListeners();
-
-    userEditBtn.addEventListener('click', () => {
-      const {userName, userDescription} = userInfo.getUserInfo();
-      userDataPopup.openPopup();
-      userNameInput.value = userName;
-      userDescriptionInput.value = userDescription;
-      userFormValidator.clearFormStyles();
-    });
-
-    userEditAvatarBtn.addEventListener('click', () => {
-      const {userAvatar} = userInfo.getUserInfo();
-      userAvatarPopup.openPopup();
-      userAvatarInput.value = userAvatar;
-      userAvatarFormValidator.clearFormStyles();
-    })
-
     cardAddBtn.addEventListener('click', () => {
       cardDataPopup.openPopup();
       cardFormValidator.clearFormStyles();
     });
-
-    // callback functions
-    function cardClickHandler(imageLink, titleText) {
-      imageZoomPopup.openPopup(imageLink, titleText);
-    }
-
-    function likeClickHandler(cardId, isLiked) {
-      return (isLiked) ? api.unsetCardLike(cardId) : api.setCardLike(cardId);
-    }
-
-    function deleteClickHanker(data) {
-      confirmationPopup.openPopup(data);
-    }
-
-    function confirmDeleteHandler({card, cardId}) {
-      confirmationPopup.renderLoading(true);
-      return api.deleteCard(cardId)
-        .then(() => {
-          card.remove()
-        })
-        .finally(() => {
-          confirmationPopup.closePopup();
-          confirmationPopup.renderLoading(false);
-
-        });
-    }
 
     function createCard(cardData) {
       return new Card({
@@ -124,7 +170,7 @@ api.initializeAppData()
       }, cardTemplateId).generateCard();
     }
 
-    function submitCardData({ cardTitle, cardImageUrl }) {
+    function submitCardData({cardTitle, cardImageUrl}) {
       cardDataPopup.renderLoading(true);
       api.addNewCard({
         name: cardTitle,
@@ -133,46 +179,20 @@ api.initializeAppData()
         .then(cardData => {
           const card = createCard(cardData);
           gallery.addItem(card);
-        })
-        .finally(() => {
           cardDataPopup.closePopup();
+        })
+        .catch(console.error)
+        .finally(() => {
           cardDataPopup.renderLoading(false);
         })
     }
 
-    function submitUserData({userName, userDescription}) {
-      userDataPopup.renderLoading(true);
-      api.updateUserInfo({
-        name: userName,
-        about: userDescription
-      })
-        .then(user => {
-          userInfo.setUserInfo({
-            userName: user.name,
-            userDescription: user.about
-          });
-        })
-        .finally(() => {
-          userDataPopup.closePopup();
-          userDataPopup.renderLoading(false);
-        });
-    }
-
-    function submitUserAvatarData({userAvatar}) {
-      userAvatarPopup.renderLoading(true);
-      api.updateUserAvatar({
-        avatar: userAvatar
-      })
-        .then((user) => {
-          userInfo.setUserInfo({
-            userAvatar: user.avatar
-          })
-        })
-        .finally(() => {
-          userAvatarPopup.closePopup();
-          userAvatarPopup.renderLoading(false);
-        });
-    }
+    const gallery = new Section({
+      renderer: cardData => {
+        const card = createCard(cardData);
+        gallery.addItem(card);
+      }
+    }, gallerySelector);
 
     userInfo.setUserInfo({
       userName: userData.name,
@@ -180,13 +200,7 @@ api.initializeAppData()
       userAvatar: userData.avatar
     });
 
-    const gallery = new Section({
-      items: cardsList.reverse(),
-      renderer: cardData => {
-        const card = createCard(cardData);
-        gallery.addItem(card);
-      }
-    }, gallerySelector);
-
-    gallery.render();
+    gallery.clear();
+    gallery.renderItems(cardsList.reverse());
   })
+  .catch(console.error);
