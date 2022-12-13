@@ -59,13 +59,7 @@ export default class FormValidator {
   }
 
   clearFormStyles() {
-    this._inputList.forEach(input => {
-      input.classList.remove(this._inputErrorClass);
-    });
-    this._errorList.forEach(error => {
-      error.classList.remove(this._activeErrorClass);
-      error.textContent = '';
-    });
+    this._inputList.forEach(input => this._hideInputError(input));
     this._checkSubmitBtnState();
   }
 
