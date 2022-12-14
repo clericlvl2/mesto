@@ -1,7 +1,7 @@
 export default class Card {
   constructor({
       cardData,
-      userData,
+      userId,
       cardClickHandler,
       likeClickHandler,
       deleteClickHanker
@@ -22,7 +22,7 @@ export default class Card {
     this._cardId = cardData._id;
     this._titleText = cardData.name;
     this._imageLink = cardData.link;
-    this._userId = userData._id;
+    this._userId = userId;
     this._isUserOwner = this._userId === cardData.owner._id;
   }
 
@@ -48,7 +48,7 @@ export default class Card {
 
   _setEventListeners() {
     this._likeButton.addEventListener('click', () => {
-      this._likeClickHandler(this, this._hasUserLike)
+      this._likeClickHandler(this)
     });
     this._cardImage.addEventListener('click', () => {
       this._cardClickHandler(this._imageLink, this._titleText);
@@ -98,5 +98,9 @@ export default class Card {
 
   getCardId() {
     return this._cardId;
+  }
+
+  isLiked() {
+    return this._hasUserLike;
   }
 }
